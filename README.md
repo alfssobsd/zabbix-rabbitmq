@@ -4,6 +4,7 @@ zabbix-rabbitmq
 Monitoring script for rabbitmq
 
 zabbix-rabbitmq-template.xml - Template for zabbix 
+
 zabbix-rabbitmq.conf - Zabbix UserParameter for discovery and monitoring
 
 rabbitmq/detect_rabbitmq_nodes.sh - discovery script
