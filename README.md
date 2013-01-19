@@ -24,8 +24,11 @@ rabbitmq/detect_rabbitmq_nodes.sh  exchange
 ```
 
 node - name node
+
 vhost - name vhost
+
 metric - name metric
+
 item - name queue or exchange
 ```
 rabbitmq/rabbitmq-status.sh [node] [vhost] [mertic] [item]
