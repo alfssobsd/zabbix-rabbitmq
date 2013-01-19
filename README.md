@@ -3,11 +3,14 @@ zabbix-rabbitmq
 
 Monitoring script for rabbitmq
 
-zabbix-rabbitmq-template.xml - Template for zabbix 
+####**zabbix-rabbitmq-template.xml** 
+Template for zabbix 
 
-zabbix-rabbitmq.conf - Zabbix UserParameter for discovery and monitoring
+####**zabbix-rabbitmq.conf** 
+Zabbix UserParameter for discovery and monitoring
 
-rabbitmq/detect_rabbitmq_nodes.sh - discovery script
+####**rabbitmq/detect_rabbitmq_nodes.sh** 
+Discovery script
 
 return nodes and vhost
 ```
@@ -23,6 +26,9 @@ return nodes and vhosts and exchanges
 ```
 rabbitmq/detect_rabbitmq_nodes.sh  exchange 
 ```
+
+####**rabbitmq/rabbitmq-status.sh**
+
 
 node - name node
 
