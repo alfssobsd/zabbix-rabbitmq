@@ -1,7 +1,7 @@
 #!/bin/bash
 #UserParameter=rabbitmq[*],<%= zabbix_script_dir %>/rabbitmq-status.sh
 
-NODE=$1
+NODE=$(echo $1| sed 's!__dog__!@!g')
 VHOST=$2
 METRIC=$3
 ITEM=$4

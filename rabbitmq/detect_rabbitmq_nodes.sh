@@ -30,11 +30,12 @@ function nodes_detect {
        for vhost in  $VHOST_LIST
        do
            local vhost_t=$(echo $vhost| sed 's!/!\\/!g')  
+           local node_t=$(echo $node| sed 's!@!__dog__!g') 
            #only nodes
            if [[ $type_detect -eq 0 ]]; then
                check_first_element
                printf "{"
-               printf "\"{#NODENAME}\":\"$node\", \"{#VHOSTNAME}\":\"$vhost_t\""
+               printf "\"{#NODENAME}\":\"$node_t\", \"{#VHOSTNAME}\":\"$vhost_t\""
                printf "}"
            fi  
            #queue  
@@ -44,7 +45,7 @@ function nodes_detect {
                do
                    check_first_element
                    printf "{"
-                   printf "\"{#NODENAME}\":\"$node\", \"{#VHOSTNAME}\":\"$vhost_t\", \"{#QUEUENAME}\":\"$queue\" "
+                   printf "\"{#NODENAME}\":\"$node_t\", \"{#VHOSTNAME}\":\"$vhost_t\", \"{#QUEUENAME}\":\"$queue\" "
                    printf "}"
                done
            fi
@@ -55,7 +56,7 @@ function nodes_detect {
                do
                    check_first_element
                    printf "{"
-                   printf "\"{#NODENAME}\":\"$node\", \"{#VHOSTNAME}\":\"$vhost_t\", \"{#EXCHANGENAME}\":\"$exchange\" "
+                   printf "\"{#NODENAME}\":\"$node_t\", \"{#VHOSTNAME}\":\"$vhost_t\", \"{#EXCHANGENAME}\":\"$exchange\" "
                    printf "}"
                done
            fi
