@@ -1,8 +1,8 @@
 #!/bin/bash
-STATUS=$(/usr/sbin/rabbitmqctl cluster_status)
+STATUS=$(sudo /usr/sbin/rabbitmqctl -q cluster_status)
 LIST_NODES=$(echo $STATUS |grep -o "{running_nodes.*.}," | sed -n '/running_nodes,\[.*\]\},/p' | sed  -r 's/\[|\]|\{|\}|running_nodes,//g')
 ARRAY_LIST_NODES=$(echo $LIST_NODES | tr "," "\n"| tr "\'" "\ ")
-FIRST_ELEMENT=0
+FIRST_ELEMENT=1
 type_detect=0
 function json_head {
     printf "{"
@@ -25,8 +25,7 @@ function nodes_detect {
     json_head
     for node in $ARRAY_LIST_NODES
     do
-       local VHOST_LIST_STATUS=$(sudo /usr/sbin/rabbitmqctl -n ${node} list_vhosts )
-       local VHOST_LIST=$( echo $VHOST_LIST_STATUS | sed 's/...done.//g' | sed 's/Listing vhosts ...//g')
+       local VHOST_LIST=$(sudo /usr/sbin/rabbitmqctl -q -n ${node} list_vhosts )
        for vhost in  $VHOST_LIST
        do
            local vhost_t=$(echo $vhost| sed 's!/!\\/!g')  
@@ -40,8 +39,7 @@ function nodes_detect {
            fi  
            #queue  
            if [[ $type_detect -eq 1 ]]; then
- 	       local list_queue_status=$(sudo /usr/sbin/rabbitmqctl -n ${node} -p ${vhost} list_queues)
-               local list_queue=$(echo $list_queue_status | sed 's/...done.//g' | sed 's/Listing vhosts ...//g' |awk '{print $1}')
+ 	       local list_queue=$(sudo /usr/sbin/rabbitmqctl -q -n ${node} -p ${vhost} list_queues | awk '{print $1}')
                for queue in  $list_queue
                do
                    check_first_element
@@ -52,8 +50,7 @@ function nodes_detect {
            fi
            #exchanges
            if [[ $type_detect -eq 2 ]]; then
-		local list_exchange_status=$(sudo /usr/sbin/rabbitmqctl -n ${node} -p ${vhost} list_exchanges )
-               local list_exchange=$( echo $list_exchange |sed 's/...done.//g' | sed 's/Listing vhosts ...//g' |awk '{print $1}')
+		local list_exchange=$(sudo /usr/sbin/rabbitmqctl -q -n ${node} -p ${vhost} list_exchanges | awk '{print $1}' )
                for exchange in  $list_exchange
                do
                    check_first_element
