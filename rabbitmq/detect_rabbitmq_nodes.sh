@@ -1,5 +1,5 @@
 #!/bin/bash
-LIST_NODES=$(sudo /usr/sbin/rabbitmqctl cluster_status|sed -n '3p'| sed -n '/running_nodes,\[.*\]\},/p' | sed  -r 's/\[|\]|\{|\}|running_nodes,//g')
+LIST_NODES=$(sudo /usr/sbin/rabbitmqctl cluster_status|sed -n '2p'| perl -pe 's/.*running_nodes\,\[(.*)\]\}.*/$1/g')
 
 ARRAY_LIST_NODES=$(echo $LIST_NODES | tr "," "\n"| tr "\'" "\ ")
 FIRST_ELEMENT=1
