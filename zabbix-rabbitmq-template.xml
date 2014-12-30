@@ -85,7 +85,7 @@
                     <publickey/>
                     <privatekey/>
                     <port/>
-                    <filter>#{NODENAME}:</filter>
+                    <filter>{#NODENAME}:</filter>
                     <lifetime>30</lifetime>
                     <description/>
                     <item_prototypes>
@@ -193,7 +193,7 @@
                     <publickey/>
                     <privatekey/>
                     <port/>
-                    <filter>#{NODENAME}:</filter>
+                    <filter>{#NODENAME}:</filter>
                     <lifetime>30</lifetime>
                     <description/>
                     <item_prototypes>
@@ -301,7 +301,7 @@
                     <publickey/>
                     <privatekey/>
                     <port/>
-                    <filter>#{NODENAME}:</filter>
+                    <filter>{#NODENAME}:</filter>
                     <lifetime>30</lifetime>
                     <description/>
                     <item_prototypes>
