@@ -1,10 +1,9 @@
 #!/bin/bash
-LIST_NODES=$(sudo /usr/sbin/rabbitmqctl cluster_status|sed -n '3p'| sed -n '/running_nodes,\[.*\]\},/p' | sed  -r 's/\[|\]|\{|\}|running_nodes,//g')
-
+STATUS=$(sudo /usr/sbin/rabbitmqctl -q cluster_status)
+LIST_NODES=$(echo $STATUS |grep -o "{running_nodes.*.}," | sed -n '/running_nodes,\[.*\]\},/p' | sed  -r 's/\[|\]|\{|\}|running_nodes,//g')
 ARRAY_LIST_NODES=$(echo $LIST_NODES | tr "," "\n"| tr "\'" "\ ")
 FIRST_ELEMENT=1
 type_detect=0
-
 function json_head {
     printf "{"
     printf "\"data\":["
@@ -26,7 +25,7 @@ function nodes_detect {
     json_head
     for node in $ARRAY_LIST_NODES
     do
-       local VHOST_LIST=$(sudo /usr/sbin/rabbitmqctl -n ${node} list_vhosts|sed '1d'|sed '/...done./d')
+       local VHOST_LIST=$(sudo /usr/sbin/rabbitmqctl -q -n ${node} list_vhosts )
        for vhost in  $VHOST_LIST
        do
            local vhost_t=$(echo $vhost| sed 's!/!\\/!g')  
@@ -40,7 +39,7 @@ function nodes_detect {
            fi  
            #queue  
            if [[ $type_detect -eq 1 ]]; then
-               local list_queue=$(sudo /usr/sbin/rabbitmqctl -n ${node} -p ${vhost} list_queues | sed '1d'|sed '/...done./d'|awk '{print $1}')
+ 	       local list_queue=$(sudo /usr/sbin/rabbitmqctl -q -n ${node} -p ${vhost} list_queues | awk '{print $1}')
                for queue in  $list_queue
                do
                    check_first_element
@@ -51,7 +50,7 @@ function nodes_detect {
            fi
            #exchanges
            if [[ $type_detect -eq 2 ]]; then
-               local list_exchange=$(sudo /usr/sbin/rabbitmqctl -n ${node} -p ${vhost} list_exchanges | sed '1d'|sed '/...done./d'|awk '{print $1}')
+		local list_exchange=$(sudo /usr/sbin/rabbitmqctl -q -n ${node} -p ${vhost} list_exchanges | awk '{print $1}' )
                for exchange in  $list_exchange
                do
                    check_first_element
